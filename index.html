@@ -149,6 +149,12 @@ pre.preview {
   background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
   font: 15px/1.5 var(--font-ui);
 }
+.notice {
+  margin-bottom: 16px; padding: 14px; border-radius: 12px;
+  border: 1px solid var(--warn); border-left-width: 5px;
+  background: var(--surface); font-size: 15px; line-height: 1.45;
+}
+.notice strong { display: block; font-size: 16px; margin-bottom: 4px; color: var(--warn); }
 .hint { color: var(--muted); font-size: 14px; margin: 8px 0 0; min-height: 1.45em; }
 h3 { font-size: 15px; color: var(--muted); font-weight: 600; margin: 20px 0 8px; }
 
@@ -263,6 +269,10 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
 
     <!-- ОТЧЁТ -->
     <section class="screen" id="report">
+      <div class="notice">
+        <strong>Приложение ничего не сохраняет.</strong>
+        Мы анонимное сообщество и бережём анонимность каждого. Данные нигде не хранятся и никуда не отправляются. Если закрыть приложение, всё пропадёт. Поэтому заполните отчёт за один раз и скопируйте его до закрытия. Имена участников не пишем.
+      </div>
       <div class="field">
         <label for="fHost">Ведущий</label>
         <input type="text" id="fHost" placeholder="Имя">
@@ -275,26 +285,8 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
           <button type="button" data-step="people" data-d="1" aria-label="Больше">+</button>
         </div>
       </div>
-      <div class="pair">
-        <div class="field">
-          <label id="l_firstNA">Впервые на АН</label>
-          <div class="stepper" aria-labelledby="l_firstNA">
-            <button type="button" data-step="firstNA" data-d="-1" aria-label="Меньше">−</button>
-            <output id="firstNA">0</output>
-            <button type="button" data-step="firstNA" data-d="1" aria-label="Больше">+</button>
-          </div>
-        </div>
-        <div class="field">
-          <label id="l_firstGroup">Впервые на NA Malam</label>
-          <div class="stepper" aria-labelledby="l_firstGroup">
-            <button type="button" data-step="firstGroup" data-d="-1" aria-label="Меньше">−</button>
-            <output id="firstGroup">0</output>
-            <button type="button" data-step="firstGroup" data-d="1" aria-label="Больше">+</button>
-          </div>
-        </div>
-      </div>
       <div class="field">
-        <label for="fJub">Юбилеи чистого времени (срок, без имён)</label>
+        <label for="fJub">Юбилеи чистого времени</label>
         <input type="text" id="fJub" placeholder="Например: 90 дней, 1 год">
       </div>
       <div class="field">
@@ -303,19 +295,18 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         <button type="button" class="chip" id="topicDaily">Ежедневник</button>
       </div>
       <div class="field">
-        <label for="fRead">Что читали</label>
-        <input type="text" id="fRead">
+        <label for="fExtra">Дополнительные темы</label>
+        <textarea id="fExtra"></textarea>
       </div>
       <div class="field">
         <label for="fNote">Заметки</label>
         <textarea id="fNote"></textarea>
       </div>
 
-      <h3>Так отчёт придёт в канал</h3>
+      <h3>Отчёт будет выглядеть так. Его можно скопировать</h3>
       <pre class="preview" id="preview"></pre>
       <div class="row">
-        <a class="btn main" id="share" href="#" target="_blank" rel="noopener">Поделиться</a>
-        <button type="button" class="btn" id="copy">Скопировать</button>
+        <button type="button" class="btn main" id="copy">Скопировать отчёт</button>
       </div>
       <p class="hint" id="copyHint"></p>
       <div class="row">
@@ -513,7 +504,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
 
   /* ---------- отчёт ---------- */
   var GROUP = 'NA Malam';
-  var counts = { people: 0, firstNA: 0, firstGroup: 0 };
+  var counts = { people: 0 };
   document.querySelectorAll('[data-step]').forEach(function (b) {
     b.addEventListener('click', function () {
       var k = b.dataset.step;
@@ -536,37 +527,23 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     L.push('Дата: ' + today());
     if (v('fHost')) L.push('Ведущий: ' + v('fHost'));
     L.push('Участников: ' + counts.people);
-    L.push('Впервые на АН: ' + (counts.firstNA > 0 ? counts.firstNA : 'не было'));
-    L.push('Впервые на ' + GROUP + ': ' + (counts.firstGroup > 0 ? counts.firstGroup : 'не было'));
     L.push('Юбилеи чистого времени: ' + (v('fJub') || 'не было'));
     if (v('fTopic')) L.push('Тема: ' + v('fTopic'));
-    if (v('fRead')) L.push('Читали: ' + v('fRead'));
+    if (v('fExtra')) L.push('Дополнительные темы: ' + v('fExtra'));
     var el = elapsed(M);
     if (el >= 60000) L.push('Длительность: ' + durText(el));
     if (v('fNote')) L.push('Заметки: ' + v('fNote'));
     return L.join('\n');
   }
-  function shareLink(text) {
-    return 'https://t.me/share/url?url=' + encodeURIComponent(text);
-  }
   function renderReport() {
     var t = buildReport();
     $('preview').textContent = t;
-    $('share').href = shareLink(t);
   }
-  ['fHost', 'fJub', 'fTopic', 'fRead', 'fNote'].forEach(function (id) {
+  ['fHost', 'fJub', 'fTopic', 'fExtra', 'fNote'].forEach(function (id) {
     $(id).addEventListener('input', renderReport);
   });
   renderReport();
   $('topicDaily').addEventListener('click', function () { $('fTopic').value = 'Ежедневник'; renderReport(); });
-
-  $('share').addEventListener('click', function (e) {
-    renderReport();
-    if (tg && tg.openTelegramLink) {
-      e.preventDefault();
-      try { tg.openTelegramLink($('share').href); } catch (err) { hint('Не получилось открыть выбор чата. Нажмите «Скопировать».'); }
-    }
-  });
 
   function hint(t) { $('copyHint').textContent = t; }
   $('copy').addEventListener('click', function () {
@@ -579,11 +556,11 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         document.body.appendChild(ta); ta.select();
         var ok = document.execCommand('copy');
         document.body.removeChild(ta);
-        hint(ok ? 'Скопировано. Вставьте в канал.' : 'Не получилось. Выделите текст отчёта пальцем и скопируйте.');
+        hint(ok ? 'Скопировано. Вставьте отчёт в нужный чат.' : 'Не получилось. Выделите текст отчёта пальцем и скопируйте.');
       } catch (e) { hint('Не получилось. Выделите текст отчёта пальцем и скопируйте.'); }
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { hint('Скопировано. Вставьте в канал.'); }, fallback);
+      navigator.clipboard.writeText(text).then(function () { hint('Скопировано. Вставьте отчёт в нужный чат.'); }, fallback);
     } else fallback();
   });
 
@@ -595,7 +572,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
       return;
     }
     wipeArmed = false; $('wipe').textContent = 'Стереть всё';
-    ['fHost', 'fJub', 'fTopic', 'fRead', 'fNote'].forEach(function (id) { $(id).value = ''; });
+    ['fHost', 'fJub', 'fTopic', 'fExtra', 'fNote'].forEach(function (id) { $(id).value = ''; });
     Object.keys(counts).forEach(function (k) { counts[k] = 0; $(k).textContent = '0'; });
     reset(M); reset(S); mReminded = false; mEnded = false; sFired = false;
     $('alert').classList.remove('on');
