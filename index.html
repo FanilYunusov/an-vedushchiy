@@ -299,6 +299,10 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         <textarea id="fExtra"></textarea>
       </div>
       <div class="field">
+        <label for="fSeventh">Седьмая традиция: сколько собрали</label>
+        <input type="text" id="fSeventh" placeholder="Например: 250 000 рупий">
+      </div>
+      <div class="field">
         <label for="fNote">Заметки</label>
         <textarea id="fNote"></textarea>
       </div>
@@ -530,6 +534,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     L.push('Юбилеи чистого времени: ' + (v('fJub') || 'не было'));
     if (v('fTopic')) L.push('Тема: ' + v('fTopic'));
     if (v('fExtra')) L.push('Дополнительные темы: ' + v('fExtra'));
+    if (v('fSeventh')) L.push('Седьмая традиция: ' + v('fSeventh'));
     var el = elapsed(M);
     if (el >= 60000) L.push('Длительность: ' + durText(el));
     if (v('fNote')) L.push('Заметки: ' + v('fNote'));
@@ -539,7 +544,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     var t = buildReport();
     $('preview').textContent = t;
   }
-  ['fHost', 'fJub', 'fTopic', 'fExtra', 'fNote'].forEach(function (id) {
+  ['fHost', 'fJub', 'fTopic', 'fExtra', 'fSeventh', 'fNote'].forEach(function (id) {
     $(id).addEventListener('input', renderReport);
   });
   renderReport();
@@ -572,7 +577,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
       return;
     }
     wipeArmed = false; $('wipe').textContent = 'Стереть всё';
-    ['fHost', 'fJub', 'fTopic', 'fExtra', 'fNote'].forEach(function (id) { $(id).value = ''; });
+    ['fHost', 'fJub', 'fTopic', 'fExtra', 'fSeventh', 'fNote'].forEach(function (id) { $(id).value = ''; });
     Object.keys(counts).forEach(function (k) { counts[k] = 0; $(k).textContent = '0'; });
     reset(M); reset(S); mReminded = false; mEnded = false; sFired = false;
     $('alert').classList.remove('on');
