@@ -58,8 +58,8 @@ main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   font-weight: 600; font-size: 18px;
 }
 .alert.on { display: flex; }
-.alert button {
-  flex: none; border: 2px solid #fff; background: transparent; color: #fff;
+.alert .acts { display: flex; flex-direction: column; gap: 6px; flex: none; }
+.alert button { border: 2px solid #fff; background: transparent; color: #fff;
   font: inherit; font-size: 15px; padding: 6px 12px; border-radius: 8px;
 }
 
@@ -82,6 +82,18 @@ main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 }
 .text h1 { font-size: 1.15em; line-height: 1.25; margin: 0 0 0.8em; text-wrap: balance; }
 .text p { margin: 0 0 0.9em; }
+.text h2 { font-size: 1.05em; line-height: 1.25; margin: 1.4em 0 0.6em; text-wrap: balance; }
+.text ul { margin: 0 0 0.9em; padding-left: 1.1em; }
+.text li { margin-bottom: 0.6em; }
+.inline {
+  min-height: 48px; padding: 8px 16px; border: 1px solid var(--accent); border-radius: 10px;
+  background: transparent; color: var(--accent); font: 600 16px var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+.chip {
+  margin-top: 8px; min-height: 40px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 20px;
+  background: var(--surface); color: var(--accent); font: 600 15px var(--font-ui);
+}
 .text .note { font-family: var(--font-ui); font-size: 14px; color: var(--muted); }
 
 /* Таймеры */
@@ -153,7 +165,10 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
 <div class="app">
   <div class="alert" id="alert" role="alert">
     <span id="alertText"></span>
-    <button type="button" id="alertOk">Понятно</button>
+    <span class="acts">
+      <button type="button" id="alertGo" hidden>К тексту</button>
+      <button type="button" id="alertOk">Понятно</button>
+    </span>
   </div>
 
   <main id="main">
@@ -167,16 +182,44 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         </div>
       </div>
       <div class="text" id="preamble">
-        <h1>Тестовый текст преамбулы</h1>
-        <p class="note">Это заглушка. Сюда встанет текст вашей группы.</p>
-        <p>Здравствуйте. Меня зовут ведущий, и сегодня я веду это собрание. Добро пожаловать всем, кто пришёл.</p>
-        <p>Просим выключить звук на телефонах, чтобы ничто не мешало нам слушать друг друга.</p>
-        <p>Здесь мы делимся своим опытом, силой и надеждой. Говорим по очереди, только о себе и своём опыте.</p>
-        <p>Всё, что вы услышите на собрании, остаётся здесь. Анонимность защищает каждого из нас.</p>
-        <p>Если кто-то пришёл на собрание в первый раз, мы особенно рады вам. Вы самый важный человек в этой комнате.</p>
-        <p>Время одного высказывания ограничено. Когда оно выйдет, ведущий даст знак.</p>
-        <p>Тема сегодняшнего собрания будет объявлена после чтения.</p>
-        <p>Конец тестового текста.</p>
+        <h1>Преамбула группы NA Malam</h1>
+        <p class="note">Собрание Анонимных Наркоманов для тех, кто выздоравливает и продолжает жить, работать и служить только сегодня.</p>
+        <p>Здравствуйте, меня зовут ____ и я зависимый(-ая). Добро пожаловать на собрание Анонимных Наркоманов «NA Malam».</p>
+        <p>Это собрание создано для зависимых, которые хотят оставаться чистыми, делиться опытом, слышать друг друга и сохранять связь с сообществом, даже если жизнь проходит в движении, работе, переездах и цифровой среде.</p>
+        <p>Мы начнем наше собрание с минуты молчания, во время которой вспомним о тех, кто погиб от этой болезни, о тех, кто находится в срыве, о тех, кто ищет дорогу к нам, поразмышляем о себе и настроимся на собрание.</p>
+        <p><button type="button" class="inline" id="silence">Минута молчания: запустить</button></p>
+        <h2>Что такое программа «Анонимные Наркоманы»?</h2>
+        <p>АН — это некоммерческое сообщество мужчин и женщин, для которых наркотики стали серьезной проблемой. Мы выздоравливающие зависимые, которые регулярно собираются для того, чтобы помогать друг другу оставаться чистыми.</p>
+        <p>Это программа полного воздержания от всех видов наркотиков. Есть только одно условие для членства в АН — это желание прекратить употребление.</p>
+        <p>Мы предлагаем тебе освободиться от предубеждений и ничего не усложнять. Наша программа — это совокупность принципов, изложенных настолько просто, что мы можем следовать им в повседневной жизни, и главное — они работают.</p>
+        <p>В АН нет никаких обязательств. Мы не входим ни в какие другие организации, у нас нет ни вступительных, ни регулярных взносов, мы не предоставляем никаких гарантий и никому не даем никаких обещаний.</p>
+        <p>Мы не связаны ни с какими политическими, религиозными или правоохранительными группами, никто и никогда не осуществляет над нами надзор.</p>
+        <p>Присоединиться к нам может каждый, независимо от возраста, национальности, сексуальной ориентации, убеждений, религии или отсутствия таковой.</p>
+        <p>Нас не интересует, сколько или какие наркотики ты употреблял, у кого ты их брал, что ты делал в прошлом, богат ты или беден. Нас интересует только твое желание решить эту проблему и как мы можем тебе помочь.</p>
+        <p>Новичок является самым важным человеком на любом собрании, потому что мы можем сохранить то, что получили в АН, только отдавая это другим. Наш опыт показывает, что те, кто продолжает регулярно посещать наши собрания, остаются чистыми.</p>
+        <p>Есть ли сегодня те, кто в первый раз пришел на собрание АН? Есть ли те, кто в первый раз пришел на «NA Malam»? Есть ли те, кто отмечает юбилей чистого времени?</p>
+        <h2>Правила нашей группы</h2>
+        <ul>
+          <li>На наших собраниях разрешено пользоваться телефонами, ноутбуками и другими гаджетами, если это помогает вам оставаться на связи, работать параллельно или просто быть здесь сегодня.</li>
+          <li>Единственная просьба: пожалуйста, используйте гаджеты так, чтобы это не отвлекало нас друг от друга и от высказываний.</li>
+          <li>По возможности возвращайте внимание к тому, чем делятся участники: к опыту, силе и надежде.</li>
+          <li>Помните, что мы приходим сюда, чтобы выздоравливать, слышать друг друга и оставаться чистыми только сегодня.</li>
+          <li>Мы не совершаем действий, отвлекающих нас друг от друга.</li>
+          <li>Мы не говорим о политике, религии и сексуальной ориентации.</li>
+          <li>Ведущий устанавливает лимит времени высказывания при необходимости.</li>
+          <li>В случае нарушения правил ведущий может сделать персональное замечание или закрыть собрание.</li>
+        </ul>
+        <p>Просьба ко всем участникам уважать и соблюдать правила группы «NA Malam» Анонимных Наркоманов.</p>
+        <p>Одной из тем для высказываний может стать Ежедневник. Добро пожаловать высказываться.</p>
+        <p class="note">Напоминаем о 7-й традиции за 15 минут до окончания.</p>
+        <h2 id="tradition7">Седьмая традиция</h2>
+        <p>Каждой группе АН следует опираться на собственные силы, отказываясь от помощи извне.</p>
+        <h2>Мы действительно выздоравливаем</h2>
+        <p>Достигнув дна и осознав, что мы не можем больше жить по-человечески ни с наркотиками, ни без них, каждый из нас сталкивается с одной и той же неразрешимой проблемой.</p>
+        <p>Что же нам остается делать? Похоже, у нас есть выбор: либо продолжать двигаться к мучительному концу — тюрьме, больнице или смерти, либо найти новый путь в жизни.</p>
+        <p>Долгие годы у очень немногих зависимых был этот выбор. Сегодня тем, кто страдает от этой болезни, повезло больше.</p>
+        <p>Впервые в истории человечества простой путь продолжает работать в жизни многих зависимых. Он доступен нам всем. Это простая духовная, но не религиозная программа, известная как «Анонимные Наркоманы».</p>
+        <p>Молитва.</p>
       </div>
     </section>
 
@@ -184,7 +227,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     <section class="screen" id="timers">
       <div class="card">
         <h2>Собрание, осталось</h2>
-        <div class="big" id="mLeft">1:30:00</div>
+        <div class="big" id="mLeft">1:00:00</div>
         <div class="sub" id="mSub">Прошло 0:00</div>
         <div class="row">
           <button type="button" class="btn main" id="mStart">Начать собрание</button>
@@ -192,7 +235,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         </div>
         <div class="set">
           <label for="mDur">Длительность, минут</label>
-          <input type="number" id="mDur" inputmode="numeric" min="1" max="300" value="90">
+          <input type="number" id="mDur" inputmode="numeric" min="1" max="300" value="60">
         </div>
       </div>
 
@@ -221,38 +264,43 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     <!-- ОТЧЁТ -->
     <section class="screen" id="report">
       <div class="field">
-        <label for="fGroup">Группа</label>
-        <input type="text" id="fGroup" value="Тестовая группа АН">
-      </div>
-      <div class="field">
         <label for="fHost">Ведущий</label>
         <input type="text" id="fHost" placeholder="Имя">
       </div>
+      <div class="field">
+        <label id="l_people">Участников</label>
+        <div class="stepper" aria-labelledby="l_people">
+          <button type="button" data-step="people" data-d="-1" aria-label="Меньше">−</button>
+          <output id="people">0</output>
+          <button type="button" data-step="people" data-d="1" aria-label="Больше">+</button>
+        </div>
+      </div>
       <div class="pair">
         <div class="field">
-          <label id="lPeople">Участников</label>
-          <div class="stepper" aria-labelledby="lPeople">
-            <button type="button" data-step="people" data-d="-1" aria-label="Меньше">−</button>
-            <output id="people">0</output>
-            <button type="button" data-step="people" data-d="1" aria-label="Больше">+</button>
+          <label id="l_firstNA">Впервые на АН</label>
+          <div class="stepper" aria-labelledby="l_firstNA">
+            <button type="button" data-step="firstNA" data-d="-1" aria-label="Меньше">−</button>
+            <output id="firstNA">0</output>
+            <button type="button" data-step="firstNA" data-d="1" aria-label="Больше">+</button>
           </div>
         </div>
         <div class="field">
-          <label id="lNew">Новичков</label>
-          <div class="stepper" aria-labelledby="lNew">
-            <button type="button" data-step="newbies" data-d="-1" aria-label="Меньше">−</button>
-            <output id="newbies">0</output>
-            <button type="button" data-step="newbies" data-d="1" aria-label="Больше">+</button>
+          <label id="l_firstGroup">Впервые на NA Malam</label>
+          <div class="stepper" aria-labelledby="l_firstGroup">
+            <button type="button" data-step="firstGroup" data-d="-1" aria-label="Меньше">−</button>
+            <output id="firstGroup">0</output>
+            <button type="button" data-step="firstGroup" data-d="1" aria-label="Больше">+</button>
           </div>
         </div>
       </div>
       <div class="field">
-        <label for="fJub">Юбилеи (срок, без имён)</label>
+        <label for="fJub">Юбилеи чистого времени (срок, без имён)</label>
         <input type="text" id="fJub" placeholder="Например: 90 дней, 1 год">
       </div>
       <div class="field">
         <label for="fTopic">Тема собрания</label>
         <input type="text" id="fTopic">
+        <button type="button" class="chip" id="topicDaily">Ежедневник</button>
       </div>
       <div class="field">
         <label for="fRead">Что читали</label>
@@ -354,12 +402,19 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
       }
     } catch (e) {}
   }
-  function signal(text) {
+  function signal(text, go) {
     $('alertText').textContent = text;
+    $('alertGo').hidden = !go;
     $('alert').classList.add('on');
     beep(); vibrate();
   }
   $('alertOk').addEventListener('click', function () { $('alert').classList.remove('on'); });
+  $('alertGo').addEventListener('click', function () {
+    $('alert').classList.remove('on');
+    document.querySelector('nav button[data-tab="read"]').click();
+    var el = $('tradition7');
+    $('main').scrollTop = Math.max(0, el.offsetTop - 70);
+  });
 
   /* ---------- экран не гаснет (где это поддерживается) ---------- */
   var wake = null;
@@ -398,7 +453,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
   }
 
   function tick() {
-    var mDur = minutes('mDur', 90) * 60000, sDur = minutes('sDur', 3) * 60000;
+    var mDur = minutes('mDur', 60) * 60000, sDur = minutes('sDur', 3) * 60000;
     var mEl = elapsed(M), mLeft = mDur - mEl;
     $('mLeft').textContent = fmt(mLeft);
     $('mLeft').classList.toggle('over', mLeft < 0);
@@ -407,7 +462,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
 
     if (M.running) {
       if (!mReminded && mDur > REMIND_MS && mLeft <= REMIND_MS && mLeft > 0) {
-        mReminded = true; signal('Седьмая традиция. До конца 15 минут.');
+        mReminded = true; signal('Седьмая традиция. До конца 15 минут.', true);
       }
       if (!mEnded && mLeft <= 0) { mEnded = true; signal('Время собрания вышло.'); }
     }
@@ -441,11 +496,24 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
   $('sStop').addEventListener('click', function () { reset(S); sFired = false; tick(); });
   $('mDur').addEventListener('input', function () { mReminded = false; mEnded = false; tick(); });
   $('sDur').addEventListener('input', function () { sFired = false; tick(); });
-  setInterval(tick, 250);
+  /* минута молчания */
+  var silenceEnd = 0;
+  $('silence').addEventListener('click', function () {
+    if (silenceEnd) { silenceEnd = 0; $('silence').textContent = 'Минута молчания: запустить'; return; }
+    silenceEnd = Date.now() + 60000; keepAwake(); silenceTick();
+  });
+  function silenceTick() {
+    if (!silenceEnd) return;
+    var left = silenceEnd - Date.now();
+    if (left <= 0) { silenceEnd = 0; $('silence').textContent = 'Минута прошла'; vibrate(); return; }
+    $('silence').textContent = 'Минута молчания: ' + fmt(left + 999);
+  }
+  setInterval(function () { tick(); silenceTick(); }, 250);
   tick();
 
   /* ---------- отчёт ---------- */
-  var counts = { people: 0, newbies: 0 };
+  var GROUP = 'NA Malam';
+  var counts = { people: 0, firstNA: 0, firstGroup: 0 };
   document.querySelectorAll('[data-step]').forEach(function (b) {
     b.addEventListener('click', function () {
       var k = b.dataset.step;
@@ -464,13 +532,13 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
   }
   function buildReport() {
     var v = function (id) { return $(id).value.trim(); };
-    var L = ['Отчёт о собрании'];
-    if (v('fGroup')) L.push('Группа: ' + v('fGroup'));
+    var L = ['Отчёт о собрании ' + GROUP];
     L.push('Дата: ' + today());
     if (v('fHost')) L.push('Ведущий: ' + v('fHost'));
     L.push('Участников: ' + counts.people);
-    L.push('Новички: ' + (counts.newbies > 0 ? counts.newbies : 'не было'));
-    L.push('Юбилеи: ' + (v('fJub') || 'не было'));
+    L.push('Впервые на АН: ' + (counts.firstNA > 0 ? counts.firstNA : 'не было'));
+    L.push('Впервые на ' + GROUP + ': ' + (counts.firstGroup > 0 ? counts.firstGroup : 'не было'));
+    L.push('Юбилеи чистого времени: ' + (v('fJub') || 'не было'));
     if (v('fTopic')) L.push('Тема: ' + v('fTopic'));
     if (v('fRead')) L.push('Читали: ' + v('fRead'));
     var el = elapsed(M);
@@ -486,10 +554,11 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     $('preview').textContent = t;
     $('share').href = shareLink(t);
   }
-  ['fGroup', 'fHost', 'fJub', 'fTopic', 'fRead', 'fNote'].forEach(function (id) {
+  ['fHost', 'fJub', 'fTopic', 'fRead', 'fNote'].forEach(function (id) {
     $(id).addEventListener('input', renderReport);
   });
   renderReport();
+  $('topicDaily').addEventListener('click', function () { $('fTopic').value = 'Ежедневник'; renderReport(); });
 
   $('share').addEventListener('click', function (e) {
     renderReport();
@@ -527,8 +596,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     }
     wipeArmed = false; $('wipe').textContent = 'Стереть всё';
     ['fHost', 'fJub', 'fTopic', 'fRead', 'fNote'].forEach(function (id) { $(id).value = ''; });
-    counts.people = 0; counts.newbies = 0;
-    $('people').textContent = '0'; $('newbies').textContent = '0';
+    Object.keys(counts).forEach(function (k) { counts[k] = 0; $(k).textContent = '0'; });
     reset(M); reset(S); mReminded = false; mEnded = false; sFired = false;
     $('alert').classList.remove('on');
     tick(); renderReport(); hint('Всё стёрто.');
