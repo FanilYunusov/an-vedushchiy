@@ -21,17 +21,20 @@
   --font-ui: "Golos Text", -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-read: "PT Serif", Georgia, "Times New Roman", serif;
   --read-size: 24px;
+  --read-bg: #F5ECD9; --read-ink: #4A3B2A; --read-line: #E2D5BB;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #111615; --surface: #1A2120; --ink: #E8EEEB; --muted: #93A09B;
     --accent: #5CC0AE; --accent-ink: #0C1513; --warn: #F0A268; --line: #2A3432;
+    --read-bg: #27211A; --read-ink: #DCCDB2; --read-line: #3A3127;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111615; --surface: #1A2120; --ink: #E8EEEB; --muted: #93A09B;
   --accent: #5CC0AE; --accent-ink: #0C1513; --warn: #F0A268; --line: #2A3432;
+    --read-bg: #27211A; --read-ink: #DCCDB2; --read-line: #3A3127;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -67,15 +70,17 @@ main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .readbar {
   position: sticky; top: 0; z-index: 2;
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 8px 16px; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding: 8px 16px; background: var(--read-bg); border-bottom: 1px solid var(--read-line);
 }
-.readbar span { color: var(--muted); font-size: 14px; }
+.readbar span { color: var(--read-ink); opacity: .75; font-size: 15px; }
 .sizebtns { display: flex; gap: 8px; }
 .sizebtns button {
-  width: 48px; height: 40px; border: 1px solid var(--line); border-radius: 8px;
-  background: var(--surface); color: var(--ink); font: 600 17px var(--font-ui);
+  width: 52px; height: 42px; border: 2px solid var(--read-ink); border-radius: 10px;
+  background: transparent; color: var(--read-ink); font: 600 17px var(--font-ui);
 }
-#read { padding: 0; }
+.sizebtns button:first-child { font-size: 14px; }
+.sizebtns button:last-child { font-size: 20px; }
+#read { padding: 0; background: var(--read-bg); color: var(--read-ink); min-height: 100%; }
 .text {
   padding: 20px 20px 48px;
   font-family: var(--font-read); font-size: var(--read-size); line-height: 1.5;
@@ -86,15 +91,11 @@ main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .text ul { margin: 0 0 0.9em; padding-left: 1.1em; }
 .text li { margin-bottom: 0.6em; }
 .inline {
-  min-height: 48px; padding: 8px 16px; border: 1px solid var(--accent); border-radius: 10px;
-  background: transparent; color: var(--accent); font: 600 16px var(--font-ui);
+  width: 100%; min-height: 54px; padding: 8px 16px; border: 0; border-radius: 12px;
+  background: var(--accent); color: var(--accent-ink); font: 600 18px var(--font-ui);
   font-variant-numeric: tabular-nums;
 }
-.chip {
-  margin-top: 8px; min-height: 40px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 20px;
-  background: var(--surface); color: var(--accent); font: 600 15px var(--font-ui);
-}
-.text .note { font-family: var(--font-ui); font-size: 14px; color: var(--muted); }
+.text .note { font-family: var(--font-ui); font-size: 14px; color: var(--read-ink); opacity: .7; }
 
 /* Таймеры */
 .card {
@@ -110,14 +111,15 @@ main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .sub { color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; min-height: 1.45em; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 .btn {
-  flex: 1; min-width: 120px; min-height: 52px; padding: 10px 14px;
-  border: 1px solid var(--line); border-radius: 12px;
-  background: var(--surface); color: var(--ink); font: 600 17px var(--font-ui);
+  flex: 1; min-width: 120px; min-height: 50px; padding: 10px 14px;
+  border: 2px solid var(--accent); border-radius: 12px;
+  background: var(--surface); color: var(--accent); font: 600 17px var(--font-ui);
   cursor: pointer; text-align: center; text-decoration: none;
   display: inline-flex; align-items: center; justify-content: center;
 }
-.btn.main { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.btn.danger { color: var(--warn); }
+.btn.main { flex: 1 1 100%; min-height: 58px; font-size: 19px; background: var(--accent); color: var(--accent-ink); }
+.btn.danger { border-color: var(--line); color: var(--warn); font-weight: 500; }
+.btn:active, .inline:active, .stepper button:active, nav button:active { opacity: .7; }
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
   outline: 3px solid var(--accent); outline-offset: 2px;
 }
@@ -139,8 +141,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .field textarea { min-height: 76px; resize: vertical; }
 .stepper { display: flex; align-items: center; gap: 12px; }
 .stepper button {
-  width: 52px; height: 48px; border: 1px solid var(--line); border-radius: 10px;
-  background: var(--surface); color: var(--ink); font: 600 22px var(--font-ui);
+  width: 60px; height: 52px; border: 2px solid var(--accent); border-radius: 12px;
+  background: var(--surface); color: var(--accent); font: 600 26px var(--font-ui);
 }
 .stepper output { min-width: 48px; text-align: center; font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -150,21 +152,23 @@ pre.preview {
   font: 15px/1.5 var(--font-ui);
 }
 .notice {
-  margin-bottom: 16px; padding: 14px; border-radius: 12px;
-  border: 1px solid var(--warn); border-left-width: 5px;
-  background: var(--surface); font-size: 15px; line-height: 1.45;
+  margin-top: 20px; padding: 14px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+  color: var(--muted); font-size: 15px; line-height: 1.45; text-align: center;
 }
-.notice strong { display: block; font-size: 16px; margin-bottom: 4px; color: var(--warn); }
 .hint { color: var(--muted); font-size: 14px; margin: 8px 0 0; min-height: 1.45em; }
 h3 { font-size: 15px; color: var(--muted); font-weight: 600; margin: 20px 0 8px; }
 
 /* Вкладки */
 nav { display: flex; border-top: 1px solid var(--line); background: var(--surface); }
 nav button {
-  flex: 1; min-height: 56px; border: 0; background: transparent; color: var(--muted);
-  font: 600 15px var(--font-ui); border-top: 3px solid transparent;
+  flex: 1; min-height: 62px; padding: 6px 4px; border: 0; background: transparent; color: var(--muted);
+  font: 600 14px var(--font-ui); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
 }
-nav button.on { color: var(--accent); border-top-color: var(--accent); }
+nav button svg { width: 24px; height: 24px; }
+nav button span { padding: 2px 12px; border-radius: 12px; }
+nav button.on { color: var(--accent); }
+nav button.on span { background: var(--accent); color: var(--accent-ink); }
 </style>
 </head>
 <body>
@@ -172,7 +176,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
   <div class="alert" id="alert" role="alert">
     <span id="alertText"></span>
     <span class="acts">
-      <button type="button" id="alertGo" hidden>К тексту</button>
+      <button type="button" id="alertGo" hidden>Открыть текст</button>
       <button type="button" id="alertOk">Понятно</button>
     </span>
   </div>
@@ -181,10 +185,10 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     <!-- ЧИТАЛКА -->
     <section class="screen on" id="read">
       <div class="readbar">
-        <span>Преамбула</span>
+        <span>Размер букв</span>
         <div class="sizebtns">
-          <button type="button" id="fontMinus" aria-label="Уменьшить шрифт">А−</button>
-          <button type="button" id="fontPlus" aria-label="Увеличить шрифт">А+</button>
+          <button type="button" id="fontMinus" aria-label="Буквы меньше">А−</button>
+          <button type="button" id="fontPlus" aria-label="Буквы больше">А+</button>
         </div>
       </div>
       <div class="text" id="preamble">
@@ -193,7 +197,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         <p>Здравствуйте, меня зовут ____ и я зависимый(-ая). Добро пожаловать на собрание Анонимных Наркоманов «NA Malam».</p>
         <p>Это собрание создано для зависимых, которые хотят оставаться чистыми, делиться опытом, слышать друг друга и сохранять связь с сообществом, даже если жизнь проходит в движении, работе, переездах и цифровой среде.</p>
         <p>Мы начнем наше собрание с минуты молчания, во время которой вспомним о тех, кто погиб от этой болезни, о тех, кто находится в срыве, о тех, кто ищет дорогу к нам, поразмышляем о себе и настроимся на собрание.</p>
-        <p><button type="button" class="inline" id="silence">Минута молчания: запустить</button></p>
+        <p><button type="button" class="inline" id="silence">Запустить минуту молчания</button></p>
         <h2>Что такое программа «Анонимные Наркоманы»?</h2>
         <p>АН — это некоммерческое сообщество мужчин и женщин, для которых наркотики стали серьезной проблемой. Мы выздоравливающие зависимые, которые регулярно собираются для того, чтобы помогать друг другу оставаться чистыми.</p>
         <p>Это программа полного воздержания от всех видов наркотиков. Есть только одно условие для членства в АН — это желание прекратить употребление.</p>
@@ -237,7 +241,7 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         <div class="sub" id="mSub">Прошло 0:00</div>
         <div class="row">
           <button type="button" class="btn main" id="mStart">Начать собрание</button>
-          <button type="button" class="btn danger" id="mReset">Сбросить</button>
+          <button type="button" class="btn danger" id="mReset">Начать заново</button>
         </div>
         <div class="set">
           <label for="mDur">Длительность, минут</label>
@@ -246,12 +250,22 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
       </div>
 
       <div class="card">
+        <h2>Седьмая традиция, напоминание через</h2>
+        <div class="big" id="rLeft">45:00</div>
+        <div class="sub" id="rSub">Сработает само после начала собрания</div>
+        <div class="set">
+          <label for="rDur">Через сколько минут напомнить</label>
+          <input type="number" id="rDur" inputmode="numeric" min="1" max="300" value="45">
+        </div>
+      </div>
+
+      <div class="card">
         <h2>Высказывание, осталось</h2>
         <div class="big" id="sLeft">3:00</div>
-        <div class="sub" id="sSub">Нажмите, когда человек начал говорить</div>
+        <div class="sub" id="sSub">Нажмите кнопку, когда человек начал говорить</div>
         <div class="row">
-          <button type="button" class="btn main" id="sNext">Старт</button>
-          <button type="button" class="btn" id="sStop">Стоп</button>
+          <button type="button" class="btn main" id="sNext">Начать высказывание</button>
+          <button type="button" class="btn" id="sStop">Остановить</button>
         </div>
         <div class="set">
           <label for="sDur">Время на одного, минут</label>
@@ -263,16 +277,11 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
         <h2>Сигналы</h2>
         <label class="check" for="optVibro"><input type="checkbox" id="optVibro" checked> Вибрация</label>
         <label class="check" for="optSound"><input type="checkbox" id="optSound" checked> Звук</label>
-        <p class="hint">Напоминание о седьмой традиции появится за 15 минут до конца собрания.</p>
       </div>
     </section>
 
     <!-- ОТЧЁТ -->
     <section class="screen" id="report">
-      <div class="notice">
-        <strong>Приложение ничего не сохраняет.</strong>
-        Мы анонимное сообщество и бережём анонимность каждого. Данные нигде не хранятся и никуда не отправляются. Если закрыть приложение, всё пропадёт. Поэтому заполните отчёт за один раз и скопируйте его до закрытия. Имена участников не пишем.
-      </div>
       <div class="field">
         <label for="fHost">Ведущий</label>
         <input type="text" id="fHost" placeholder="Имя">
@@ -292,7 +301,6 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
       <div class="field">
         <label for="fTopic">Тема собрания</label>
         <input type="text" id="fTopic">
-        <button type="button" class="chip" id="topicDaily">Ежедневник</button>
       </div>
       <div class="field">
         <label for="fExtra">Дополнительные темы</label>
@@ -316,13 +324,23 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
       <div class="row">
         <button type="button" class="btn danger" id="wipe">Стереть всё</button>
       </div>
+      <div class="notice">Мы бережём анонимность, поэтому приложение ничего не сохраняет. Скопируйте отчёт до того, как закроете его.</div>
     </section>
   </main>
 
   <nav>
-    <button type="button" class="on" data-tab="read">Текст</button>
-    <button type="button" data-tab="timers">Таймеры</button>
-    <button type="button" data-tab="report">Отчёт</button>
+    <button type="button" class="on" data-tab="read">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-2-1.3-4.7-2-8-2v14c3.300 0 6 .7 8 2 2-1.300 4.700-2 8-2V4c-3.300 0-6 .7-8 2z"/><path d="M12 6v14"/></svg>
+      <span>Текст</span>
+    </button>
+    <button type="button" data-tab="timers">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>
+      <span>Таймеры</span>
+    </button>
+    <button type="button" data-tab="report">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      <span>Отчёт</span>
+    </button>
   </nav>
 </div>
 
@@ -427,7 +445,6 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
   });
 
   /* ---------- таймеры ---------- */
-  var REMIND_MS = 15 * 60 * 1000;
   function mkTimer() { return { running: false, startedAt: 0, acc: 0 }; }
   var M = mkTimer(), S = mkTimer();
   var mReminded = false, mEnded = false, sFired = false;
@@ -450,14 +467,17 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
   function tick() {
     var mDur = minutes('mDur', 60) * 60000, sDur = minutes('sDur', 3) * 60000;
     var mEl = elapsed(M), mLeft = mDur - mEl;
+    var rAt = minutes('rDur', 45) * 60000, rLeft = Math.max(0, rAt - mEl);
+    $('rLeft').textContent = fmt(rLeft);
+    $('rSub').textContent = mReminded ? 'Напоминание сработало' : (M.running ? 'Сработает само, ничего нажимать не нужно' : 'Сработает само после начала собрания');
     $('mLeft').textContent = fmt(mLeft);
     $('mLeft').classList.toggle('over', mLeft < 0);
     $('mSub').textContent = mLeft < 0 ? 'Время вышло. Прошло ' + fmt(mEl) : 'Прошло ' + fmt(mEl);
     $('mStart').textContent = M.running ? 'Пауза' : (mEl > 0 ? 'Продолжить' : 'Начать собрание');
 
     if (M.running) {
-      if (!mReminded && mDur > REMIND_MS && mLeft <= REMIND_MS && mLeft > 0) {
-        mReminded = true; signal('Седьмая традиция. До конца 15 минут.', true);
+      if (!mReminded && mEl >= rAt) {
+        mReminded = true; signal('Пора напомнить о седьмой традиции.', true);
       }
       if (!mEnded && mLeft <= 0) { mEnded = true; signal('Время собрания вышло.'); }
     }
@@ -465,8 +485,8 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     var sEl = elapsed(S), sLeft = sDur - sEl;
     $('sLeft').textContent = fmt(sLeft);
     $('sLeft').classList.toggle('over', sLeft < 0);
-    $('sNext').textContent = (S.running || sEl > 0) ? 'Следующий' : 'Старт';
-    $('sSub').textContent = sLeft < 0 ? 'Время вышло' : (S.running ? 'Идёт высказывание' : 'Нажмите, когда человек начал говорить');
+    $('sNext').textContent = (S.running || sEl > 0) ? 'Следующий человек' : 'Начать высказывание';
+    $('sSub').textContent = sLeft < 0 ? 'Время вышло' : (S.running ? 'Идёт высказывание' : 'Нажмите кнопку, когда человек начал говорить');
     if (S.running && !sFired && sLeft <= 0) { sFired = true; signal('Время высказывания вышло.'); }
   }
 
@@ -478,23 +498,24 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
   var resetArmed = false;
   $('mReset').addEventListener('click', function () {
     if (!resetArmed) {
-      resetArmed = true; $('mReset').textContent = 'Точно сбросить?';
-      setTimeout(function () { resetArmed = false; $('mReset').textContent = 'Сбросить'; }, 3000);
+      resetArmed = true; $('mReset').textContent = 'Нажмите ещё раз';
+      setTimeout(function () { resetArmed = false; $('mReset').textContent = 'Начать заново'; }, 3000);
       return;
     }
-    resetArmed = false; $('mReset').textContent = 'Сбросить';
+    resetArmed = false; $('mReset').textContent = 'Начать заново';
     reset(M); mReminded = false; mEnded = false; tick();
   });
   $('sNext').addEventListener('click', function () {
     armAudio(); reset(S); sFired = false; start(S); keepAwake(); tick();
   });
   $('sStop').addEventListener('click', function () { reset(S); sFired = false; tick(); });
-  $('mDur').addEventListener('input', function () { mReminded = false; mEnded = false; tick(); });
+  $('mDur').addEventListener('input', function () { mEnded = false; tick(); });
+  $('rDur').addEventListener('input', function () { mReminded = elapsed(M) >= minutes('rDur', 45) * 60000; tick(); });
   $('sDur').addEventListener('input', function () { sFired = false; tick(); });
   /* минута молчания */
   var silenceEnd = 0;
   $('silence').addEventListener('click', function () {
-    if (silenceEnd) { silenceEnd = 0; $('silence').textContent = 'Минута молчания: запустить'; return; }
+    if (silenceEnd) { silenceEnd = 0; $('silence').textContent = 'Запустить минуту молчания'; return; }
     silenceEnd = Date.now() + 60000; keepAwake(); silenceTick();
   });
   function silenceTick() {
@@ -548,7 +569,6 @@ nav button.on { color: var(--accent); border-top-color: var(--accent); }
     $(id).addEventListener('input', renderReport);
   });
   renderReport();
-  $('topicDaily').addEventListener('click', function () { $('fTopic').value = 'Ежедневник'; renderReport(); });
 
   function hint(t) { $('copyHint').textContent = t; }
   $('copy').addEventListener('click', function () {
