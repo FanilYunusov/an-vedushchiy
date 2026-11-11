@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ведущий собрания АН</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,700&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 /* Идея: узкая колонка телефона, три вкладки внизу, читалка без шума, крупные цифры таймеров */
@@ -18,8 +18,8 @@
   --accent-ink: #FFFFFF;
   --warn: #B4541A;
   --line: #D9E0DD;
-  --font-ui: "Golos Text", -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-read: "PT Serif", Georgia, "Times New Roman", serif;
+  --font-ui: "Onest", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-read: "Literata", Georgia, "Times New Roman", serif;
   --read-size: 24px;
   --read-bg: #F5ECD9; --read-ink: #4A3B2A; --read-line: #E2D5BB;
 }
@@ -108,6 +108,11 @@ main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   font-variant-numeric: tabular-nums;
 }
 .big.over { color: var(--warn); }
+.tip {
+  margin-top: 10px; padding: 10px 12px; border-radius: 10px;
+  background: var(--bg); border-left: 4px solid var(--accent);
+  font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums;
+}
 .sub { color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; min-height: 1.45em; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 .btn {
@@ -152,10 +157,13 @@ pre.preview {
   font: 15px/1.5 var(--font-ui);
 }
 .notice {
-  margin-top: 20px; padding: 14px; border-radius: 12px;
-  background: var(--surface); border: 1px solid var(--line);
-  color: var(--muted); font-size: 15px; line-height: 1.45; text-align: center;
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-bottom: 18px; padding: 14px; border-radius: 14px;
+  background: var(--accent); color: var(--accent-ink);
+  font-size: 15px; line-height: 1.4;
 }
+.notice svg { flex: none; width: 28px; height: 28px; margin-top: 2px; }
+.notice strong { display: block; font-size: 18px; font-weight: 700; margin-bottom: 2px; }
 .hint { color: var(--muted); font-size: 14px; margin: 8px 0 0; min-height: 1.45em; }
 h3 { font-size: 15px; color: var(--muted); font-weight: 600; margin: 20px 0 8px; }
 
@@ -239,6 +247,7 @@ nav button.on span { background: var(--accent); color: var(--accent-ink); }
         <h2>Собрание, осталось</h2>
         <div class="big" id="mLeft">1:00:00</div>
         <div class="sub" id="mSub">Прошло 0:00</div>
+        <div class="tip" id="rTip">Напоминание о седьмой традиции прозвучит само на 45-й минуте собрания.</div>
         <div class="row">
           <button type="button" class="btn main" id="mStart">Начать собрание</button>
           <button type="button" class="btn danger" id="mReset">Начать заново</button>
@@ -246,16 +255,6 @@ nav button.on span { background: var(--accent); color: var(--accent-ink); }
         <div class="set">
           <label for="mDur">Длительность, минут</label>
           <input type="number" id="mDur" inputmode="numeric" min="1" max="300" value="60">
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Седьмая традиция, напоминание через</h2>
-        <div class="big" id="rLeft">45:00</div>
-        <div class="sub" id="rSub">Сработает само после начала собрания</div>
-        <div class="set">
-          <label for="rDur">Через сколько минут напомнить</label>
-          <input type="number" id="rDur" inputmode="numeric" min="1" max="300" value="45">
         </div>
       </div>
 
@@ -282,6 +281,10 @@ nav button.on span { background: var(--accent); color: var(--accent-ink); }
 
     <!-- ОТЧЁТ -->
     <section class="screen" id="report">
+      <div class="notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <div><strong>Мы бережём анонимность</strong>Приложение ничего не сохраняет. Скопируйте отчёт до того, как закроете его.</div>
+      </div>
       <div class="field">
         <label for="fHost">Ведущий</label>
         <input type="text" id="fHost" placeholder="Имя">
@@ -324,7 +327,6 @@ nav button.on span { background: var(--accent); color: var(--accent-ink); }
       <div class="row">
         <button type="button" class="btn danger" id="wipe">Стереть всё</button>
       </div>
-      <div class="notice">Мы бережём анонимность, поэтому приложение ничего не сохраняет. Скопируйте отчёт до того, как закроете его.</div>
     </section>
   </main>
 
@@ -445,6 +447,7 @@ nav button.on span { background: var(--accent); color: var(--accent-ink); }
   });
 
   /* ---------- таймеры ---------- */
+  var REMIND_AT = 45 * 60000;
   function mkTimer() { return { running: false, startedAt: 0, acc: 0 }; }
   var M = mkTimer(), S = mkTimer();
   var mReminded = false, mEnded = false, sFired = false;
@@ -467,9 +470,10 @@ nav button.on span { background: var(--accent); color: var(--accent-ink); }
   function tick() {
     var mDur = minutes('mDur', 60) * 60000, sDur = minutes('sDur', 3) * 60000;
     var mEl = elapsed(M), mLeft = mDur - mEl;
-    var rAt = minutes('rDur', 45) * 60000, rLeft = Math.max(0, rAt - mEl);
-    $('rLeft').textContent = fmt(rLeft);
-    $('rSub').textContent = mReminded ? 'Напоминание сработало' : (M.running ? 'Сработает само, ничего нажимать не нужно' : 'Сработает само после начала собрания');
+    var rAt = REMIND_AT, rLeft = Math.max(0, rAt - mEl);
+    $('rTip').textContent = mReminded ? 'Напоминание о седьмой традиции уже прозвучало.'
+      : (mEl > 0 ? 'Напоминание о седьмой традиции прозвучит само через ' + fmt(rLeft) + '.'
+                 : 'Напоминание о седьмой традиции прозвучит само на 45-й минуте собрания.');
     $('mLeft').textContent = fmt(mLeft);
     $('mLeft').classList.toggle('over', mLeft < 0);
     $('mSub').textContent = mLeft < 0 ? 'Время вышло. Прошло ' + fmt(mEl) : 'Прошло ' + fmt(mEl);
@@ -510,7 +514,6 @@ nav button.on span { background: var(--accent); color: var(--accent-ink); }
   });
   $('sStop').addEventListener('click', function () { reset(S); sFired = false; tick(); });
   $('mDur').addEventListener('input', function () { mEnded = false; tick(); });
-  $('rDur').addEventListener('input', function () { mReminded = elapsed(M) >= minutes('rDur', 45) * 60000; tick(); });
   $('sDur').addEventListener('input', function () { sFired = false; tick(); });
   /* минута молчания */
   var silenceEnd = 0;
